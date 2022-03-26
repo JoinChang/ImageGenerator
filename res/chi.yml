@@ -1,0 +1,30 @@
+id: chi
+name: 吃
+type: gif
+duration: 1
+background_color: "rgb(255,255,255)"
+positions:
+  - type: image
+    target: background
+    frames: 
+      - id: 0
+        x: 1
+        y: 38
+        size:
+          - 40
+          - 40
+      - id: 1
+        x: 1
+        y: 38
+        size:
+          - 40
+          - 40
+      - id: 2
+        x: 1
+        y: 38
+        size:
+          - 40
+          - 40
+output_size:
+  - 60
+  - 67

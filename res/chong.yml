@@ -1,0 +1,25 @@
+id: chong
+name: 冲
+type: gif
+duration: 1
+background_color: "rgb(255,255,255)"
+positions:
+  - type: image
+    target: foreground
+    rounded: true
+    frames: 
+      - id: 0
+        x: 15
+        y: 53
+        size:
+          - 30
+          - 30
+      - id: 1
+        x: 40
+        y: 53
+        size:
+          - 30
+          - 30
+output_size:
+  - 138
+  - 115

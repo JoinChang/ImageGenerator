@@ -1,0 +1,95 @@
+id: ceng
+name: 蹭
+type: gif
+duration: 1
+background_color: "rgb(255,255,255)"
+positions:
+  - type: image
+    target: foreground
+    rounded: true
+    frames: 
+      - id: 0
+        x: 40
+        y: 88
+        size:
+          - 75
+          - 77
+      - id: 1
+        x: 46
+        y: 100
+        size:
+          - 75
+          - 77
+      - id: 2
+        x: 67
+        y: 99
+        size:
+          - 75
+          - 77
+      - id: 3
+        x: 52
+        y: 83
+        size:
+          - 75
+          - 77
+      - id: 4
+        x: 56
+        y: 110
+        size:
+          - 75
+          - 77
+      - id: 5
+        x: 62
+        y: 102
+        size:
+          - 75
+          - 77
+  - type: image
+    target: foreground
+    rounded: true
+    frames: 
+      - id: 0
+        x: 102
+        y: 81
+        size:
+          - 77
+          - 103
+      - id: 1
+        x: 92
+        y: 40
+        size:
+          - 62
+          - 127
+        rotate:
+          - 10
+      - id: 2
+        x: 90
+        y: 8
+        size:
+          - 76
+          - 117
+      - id: 3
+        x: 53
+        y: -20
+        size:
+          - 94
+          - 94
+        rotate:
+          - -40
+      - id: 4
+        x: 78
+        y: 40
+        size:
+          - 132
+          - 80
+        rotate:
+          - -66
+      - id: 5
+        x: 110
+        y: 94
+        size:
+          - 71
+          - 100
+output_size:
+  - 240
+  - 240

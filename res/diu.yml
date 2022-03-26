@@ -1,0 +1,72 @@
+id: diu
+name: 丢
+type: gif
+duration: 1
+background_color: "rgb(255,255,255)"
+positions:
+  - type: image
+    target: foreground
+    rounded: true
+    source: 0
+    frames: 
+      - id: 0
+        x: 108
+        y: 36
+        size:
+          - 32
+          - 32
+      - id: 1
+        x: 122
+        y: 36
+        size:
+          - 32
+          - 32
+      - id: 2
+      - id: 3
+        x: 19
+        y: 129
+        size:
+          - 123
+          - 123
+      - id: 4
+        x: -50
+        y: 200
+        size:
+          - 185
+          - 185
+      - id: 5
+        x: 280
+        y: 73
+        size:
+          - 32
+          - 32
+      - id: 6
+        x: 259
+        y: 31
+        size:
+          - 35
+          - 35
+      - id: 7
+        x: -50
+        y: 220
+        size:
+          - 175
+          - 175
+  - type: image
+    target: foreground
+    rounded: true
+    source: 0
+    frames: 
+      - id: 0
+      - id: 1
+      - id: 2
+      - id: 3
+      - id: 4
+        x: 289
+        y: 70
+        size:
+          - 33
+          - 33
+output_size:
+  - 350
+  - 350

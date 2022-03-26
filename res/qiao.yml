@@ -1,0 +1,25 @@
+id: qiao
+name: 敲
+type: gif
+duration: 1
+background_color: "rgb(255,255,255)"
+positions:
+  - type: image
+    target: foreground
+    rounded: true
+    frames: 
+      - id: 0
+        x: 57
+        y: 52
+        size:
+          - 40
+          - 33
+      - id: 1
+        x: 58
+        y: 50
+        size:
+          - 38
+          - 36
+output_size:
+  - 124
+  - 95

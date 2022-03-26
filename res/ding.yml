@@ -1,0 +1,72 @@
+id: ding
+name: 顶
+type: gif
+duration: 1
+background_color: "rgb(0,0,0)"
+positions:
+  - type: image
+    target: background
+    frames: 
+      - id: 0
+        x: 183
+        y: 62
+        size:
+          - 95
+          - 95
+      - id: 1
+        x: 185
+        y: 76
+        size:
+          - 93
+          - 95
+      - id: 2
+        x: 184
+        y: 99
+        size:
+          - 97
+          - 96
+      - id: 3
+        x: 185
+        y: 120
+        size:
+          - 99
+          - 93
+      - id: 4
+        x: 157
+        y: 195
+        size:
+          - 148
+          - 44
+      - id: 5
+        x: 179
+        y: 136
+        size:
+          - 119
+          - 68
+      - id: 6
+        x: 176
+        y: 67
+        size:
+          - 119
+          - 82
+      - id: 7
+        x: 176
+        y: 38
+        size:
+          - 122
+          - 94
+      - id: 8
+        x: 181
+        y: 36
+        size:
+          - 108
+          - 89
+      - id: 9
+        x: 184
+        y: 34
+        size:
+          - 100
+          - 90
+output_size:
+  - 480
+  - 400

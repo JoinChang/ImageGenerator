@@ -1,0 +1,49 @@
+id: ken
+name: 啃
+type: gif
+duration: 1
+background_color: "rgb(255,255,255)"
+positions:
+  - type: image
+    target: background
+    rounded: true
+    frames: 
+      - id: 0
+        x: 105
+        y: 150
+        size:
+          - 90
+          - 90
+      - id: 1
+        x: 96
+        y: 172
+        size:
+          - 90
+          - 83
+      - id: 2
+        x: 106
+        y: 148
+        size:
+          - 90
+          - 90
+      - id: 3
+        x: 97
+        y: 167
+        size:
+          - 88
+          - 88
+      - id: 4
+        x: 89
+        y: 179
+        size:
+          - 90
+          - 85
+      - id: 5
+        x: 106
+        y: 151
+        size:
+          - 90
+          - 90
+output_size:
+  - 362
+  - 364

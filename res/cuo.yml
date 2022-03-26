@@ -1,0 +1,52 @@
+id: cuo
+name: 搓
+type: gif
+duration: 1
+background_color: "rgb(0,0,0)"
+positions:
+  - type: image
+    target: background
+    frames: 
+      - id: 0
+        x: 75
+        y: 130
+        size:
+          - 110
+          - 110
+        rotate:
+          - 0
+      - id: 1
+        x: 75
+        y: 130
+        size:
+          - 110
+          - 110
+        rotate:
+          - 72
+      - id: 2
+        x: 75
+        y: 130
+        size:
+          - 110
+          - 110
+        rotate:
+          - 144
+      - id: 3
+        x: 75
+        y: 130
+        size:
+          - 110
+          - 110
+        rotate:
+          - 216
+      - id: 4
+        x: 75
+        y: 130
+        size:
+          - 110
+          - 110
+        rotate:
+          - 288
+output_size:
+  - 200
+  - 200

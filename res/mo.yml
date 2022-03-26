@@ -1,0 +1,42 @@
+id: mo
+name: 摸
+type: gif
+duration: 1
+background_color: "rgba(255,255,255,0)"
+positions:
+  - type: image
+    target: background
+    frames: 
+      - id: 0
+        x: 32
+        y: 32
+        size:
+          - 80
+          - 80
+      - id: 1
+        x: 22
+        y: 42
+        size:
+          - 90
+          - 70
+      - id: 2
+        x: 27
+        y: 37
+        size:
+          - 85
+          - 75
+      - id: 3
+        x: 37
+        y: 27
+        size:
+          - 75
+          - 85
+      - id: 4
+        x: 42
+        y: 22
+        size:
+          - 70
+          - 90
+output_size:
+  - 112
+  - 112
