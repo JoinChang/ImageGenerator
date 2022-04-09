@@ -1,0 +1,23 @@
+id: beibao
+name: 悲报
+type: jpg
+positions:
+  - type: text
+    target: foreground
+    multiline: true
+    font:
+      name: msyh.ttf
+      min_size: 128
+      max_size: 1024
+      color: black
+      align: center
+    frames: 
+      - id: 0
+        x: 1701
+        y: 1230
+        size:
+          - 2602
+          - 2051
+output_size:
+  - 3402
+  - 2551
