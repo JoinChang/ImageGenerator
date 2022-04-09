@@ -1,3 +1,4 @@
+from io import BufferedReader
 from PIL import Image, ImageDraw, ImageFont
 import textwrap
 import uuid
@@ -64,7 +65,7 @@ class ImageGenerator:
 
         # 读取输入图片
         for _input_content in input_content:
-            if isinstance(_input_content, bytes):
+            if isinstance(_input_content, BufferedReader):
                 paste_content.append(Image.open(_input_content).convert("RGBA"))
             elif isinstance(_input_content, str):
                 paste_content.append(_input_content)
@@ -80,7 +81,7 @@ class ImageGenerator:
         for position_id, position in enumerate(config.positions):
             if position.type == "image":
                 _image = paste_content[position_id]
-                if not isinstance(_image, Image):
+                if not isinstance(_image, Image.Image):
                     raise UnmatchedPositionType(position_id, position.type)
                 if position.source is not None:
                     _image = paste_content[position.source]
