@@ -71,11 +71,20 @@ class ImageGenerator:
                 paste_content.append(_input_content)
 
         # 预生成背景图与前景图
-        file_list = os.listdir(f"{PATH}/res/{config.id}")
-        file_list.sort(key=lambda x: int(x[:-4]))
-        for file_name in file_list:
+        sequences = list()
+        def append_basic_frame(file_name):
             background_frame.append(Image.new("RGBA", (config.output_size[0], config.output_size[1]), config.background_color))
             foreground_frame.append(Image.open(f"{PATH}/res/{config.id}/{file_name}").convert("RGBA"))
+        
+        file_list = os.listdir(f"{PATH}/res/{config.id}")
+        file_list.sort(key=lambda x: int(x[:-4]))
+        if config.sequence is not None: # 自定义队列
+            sequences = config.sequence.replace(" ", "").split(",")
+            for sequence in sequences:
+                append_basic_frame(f"{int(sequence)}.png")
+        else:
+            for file_name in file_list:
+                append_basic_frame(file_name)
         
         # 粘贴内容
         for position_id, position in enumerate(config.positions):
@@ -103,15 +112,24 @@ class ImageGenerator:
                     else:
                         _position = (frame.x, frame.y)
                     if position.target == "background": # 背景图
-                        background_frame[frame_id].paste(image, _position, image)
+                        if len(sequences) != 0:
+                            for sequence_frame_id, _frame_id in enumerate(sequences):
+                                if frame_id == int(_frame_id):
+                                    background_frame[sequence_frame_id].paste(image, _position, image)
+                        else:
+                            background_frame[frame_id].paste(image, _position, image)
                     elif position.target == "foreground": # 前景图
-                        foreground_paste_task.append([position, frame_id, image, _position])
+                        if len(sequences) != 0:
+                            for sequence_frame_id, _frame_id in enumerate(sequences):
+                                if frame_id == int(_frame_id):
+                                    foreground_paste_task.append([position, sequence_frame_id, image, _position])
+                        else:
+                            foreground_paste_task.append([position, frame_id, image, _position])
             elif position.type == "text":
                 _text = paste_content[position_id]
                 if not isinstance(_text, str):
                     raise UnmatchedPositionType(position_id, position.type)
                 for frame_id, frame in enumerate(position.frames):
-                    draw = ImageDraw.Draw(background_frame[frame_id])
                     is_wrap = True
                     if isinstance(position.font.size, int):
                         font_size = position.font.size
@@ -152,9 +170,21 @@ class ImageGenerator:
                         "align": position.font.align
                     }
                     if position.target == "background": # 背景图
-                        draw.multiline_text(**kwargs)
+                        if len(sequences) != 0:
+                            for sequence_frame_id, _frame_id in enumerate(sequences):
+                                if frame_id == int(_frame_id):
+                                    draw = ImageDraw.Draw(background_frame[sequence_frame_id])
+                                    draw.multiline_text(**kwargs)
+                        else:
+                            draw = ImageDraw.Draw(background_frame[frame_id])
+                            draw.multiline_text(**kwargs)
                     elif position.target == "foreground": # 前景图
-                        foreground_paste_task.append([position, frame_id, kwargs, font_size])
+                        if len(sequences) != 0:
+                            for sequence_frame_id, _frame_id in enumerate(sequences):
+                                if frame_id == int(_frame_id):
+                                    foreground_paste_task.append([position, sequence_frame_id, kwargs, font_size])
+                        else:
+                            foreground_paste_task.append([position, frame_id, kwargs, font_size])
         
         # 粘贴前景图
         for frame_id, frame in enumerate(background_frame):

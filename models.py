@@ -33,3 +33,4 @@ class Config(BaseModel):
     output_size: List[int] # [宽, 高]
     background_color: Optional[str] # 背景颜色
     duration: Optional[float] # 仅 GIF, 单帧持续时间 (ms)
+    sequence: Optional[str] # 序列
