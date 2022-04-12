@@ -1,0 +1,73 @@
+id: pai2
+name: 拍2
+type: gif
+duration: 1
+background_color: white
+sequence: "0,1,2,3,1,2,3,0,1,2,3,0,0,1,2,3,0,0,0,0,4,5,5,5,6,7,8,9"
+positions:
+  - type: image
+    target: background
+    frames: 
+      - id: 0
+        x: 11
+        y: 73
+        size:
+          - 106
+          - 100
+      - id: 1
+        x: 11
+        y: 73
+        size:
+          - 106
+          - 100
+      - id: 2
+        x: 8
+        y: 79
+        size:
+          - 112
+          - 96
+      - id: 3
+        x: 11
+        y: 73
+        size:
+          - 106
+          - 100
+      - id: 4
+        x: 11
+        y: 73
+        size:
+          - 106
+          - 100
+      - id: 5
+        x: 11
+        y: 73
+        size:
+          - 106
+          - 100
+      - id: 6
+        x: 11
+        y: 73
+        size:
+          - 106
+          - 100
+      - id: 7
+        x: 11
+        y: 73
+        size:
+          - 106
+          - 100
+      - id: 8
+        x: 11
+        y: 73
+        size:
+          - 106
+          - 100
+      - id: 9
+        x: 11
+        y: 73
+        size:
+          - 106
+          - 100
+output_size:
+  - 235
+  - 196
