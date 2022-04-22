@@ -1,0 +1,60 @@
+id: qiao2
+name: 敲2
+type: gif
+duration: 40
+background_color: "rgb(255,255,255)"
+positions:
+  - type: image
+    target: background
+    frames: 
+      - id: 0
+        x: 60
+        y: 308
+        size:
+          - 210
+          - 195
+      - id: 1
+        x: 60
+        y: 308
+        size:
+          - 210
+          - 198
+      - id: 2
+        x: 45
+        y: 330
+        size:
+          - 250
+          - 172
+      - id: 3
+        x: 58
+        y: 320
+        size:
+          - 218
+          - 180
+      - id: 4
+        x: 60
+        y: 310
+        size:
+          - 215
+          - 193
+      - id: 5
+        x: 40
+        y: 320
+        size:
+          - 250
+          - 185
+      - id: 6
+        x: 48
+        y: 308
+        size:
+          - 226
+          - 192
+      - id: 7
+        x: 51
+        y: 301
+        size:
+          - 223
+          - 200
+output_size:
+  - 600
+  - 532
