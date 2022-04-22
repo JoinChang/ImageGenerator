@@ -133,8 +133,8 @@ class ImageGenerator:
                         else:
                             w, h = _font.getsize(_text)
                     _position = (frame.x, frame.y)
-                    w, h = _font.getsize_multiline(_text)
-                    _image = Image.new("RGBA", (w, h), "rgba(0,0,0,0)")
+                    (w, h), (offset_x, offset_y) = _font.font.getsize(_text)
+                    _image = Image.new("RGBA", (w + offset_x, h + offset_y), "rgba(0,0,0,0)")
                     draw = ImageDraw.Draw(_image)
                     draw.multiline_text(**{
                         "xy": (0, 0), # _position
@@ -171,7 +171,10 @@ class ImageGenerator:
                     else:
                         _position = (frame_x, frame_y)
                 else:
-                    _position = (frame_x, frame_y)
+                    if position.type != "text":
+                        _position = (frame_x, frame_y)
+                    else:
+                        _position = (int(frame_x - image.width / 2), int(frame_y - image.height / 2))
                 
                 if position.target == "background": # 背景图
                     if len(sequences) != 0:
