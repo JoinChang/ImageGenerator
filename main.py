@@ -1,5 +1,6 @@
 from io import BufferedReader
 from PIL import Image, ImageDraw, ImageFont
+from typing import Union, List
 import textwrap
 import uuid
 import yaml
@@ -9,9 +10,9 @@ import os
 PATH = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(PATH)
 
-from lib.pilmoji import Pilmoji
-from models import Config, Union, List
+from models import Config
 from exceptions import *
+from utils import round_image, perspective_image
 
 class ImageGenerator:
     def __init__(self):
@@ -96,35 +97,7 @@ class ImageGenerator:
                     _image = paste_content[position.source]
                 
                 if position.rounded: # 裁剪为圆形
-                    _image = self._round_image(_image)
-                
-                for frame_id, frame in enumerate(position.frames):
-                    if frame.size is None:
-                        continue
-                    image = _image.resize((frame.size[0], frame.size[1]))
-                    if frame.rotate is not None:
-                        image = image.rotate(
-                            frame.rotate[0], center=None if len(frame.rotate) != 3 else (frame.rotate[1], frame.rotate[2]), expand=True)
-                        if not position.rounded: # 旋转后需要重新计算位置
-                            _position = (int(frame.x - image.width / 2), int(frame.y - image.height / 2))
-                        else:
-                            _position = (frame.x, frame.y)
-                    else:
-                        _position = (frame.x, frame.y)
-                    if position.target == "background": # 背景图
-                        if len(sequences) != 0:
-                            for sequence_frame_id, _frame_id in enumerate(sequences):
-                                if frame_id == int(_frame_id):
-                                    background_frame[sequence_frame_id].paste(image, _position, image)
-                        else:
-                            background_frame[frame_id].paste(image, _position, image)
-                    elif position.target == "foreground": # 前景图
-                        if len(sequences) != 0:
-                            for sequence_frame_id, _frame_id in enumerate(sequences):
-                                if frame_id == int(_frame_id):
-                                    foreground_paste_task.append([position, sequence_frame_id, image, _position])
-                        else:
-                            foreground_paste_task.append([position, frame_id, image, _position])
+                    _image = round_image(_image)
             elif position.type == "text":
                 _text = paste_content[position_id]
                 if not isinstance(_text, str):
@@ -159,57 +132,75 @@ class ImageGenerator:
                             w, h = _font.getsize_multiline(_text)
                         else:
                             w, h = _font.getsize(_text)
-                        _position = (int(frame.x - w / 2), int(frame.y - h / 2))
-                    else:
-                        _position = (frame.x, frame.y)
-                    kwargs = {
-                        "xy": _position,
+                    _position = (frame.x, frame.y)
+                    w, h = _font.getsize_multiline(_text)
+                    _image = Image.new("RGBA", (w, h), "rgba(0,0,0,0)")
+                    draw = ImageDraw.Draw(_image)
+                    draw.multiline_text(**{
+                        "xy": (0, 0), # _position
                         "text": _text,
                         "fill": position.font.color,
                         "font": _font,
                         "align": position.font.align
-                    }
-                    if position.target == "background": # 背景图
-                        if len(sequences) != 0:
-                            for sequence_frame_id, _frame_id in enumerate(sequences):
-                                if frame_id == int(_frame_id):
-                                    draw = ImageDraw.Draw(background_frame[sequence_frame_id])
-                                    draw.multiline_text(**kwargs)
-                        else:
-                            draw = ImageDraw.Draw(background_frame[frame_id])
-                            draw.multiline_text(**kwargs)
-                    elif position.target == "foreground": # 前景图
-                        if len(sequences) != 0:
-                            for sequence_frame_id, _frame_id in enumerate(sequences):
-                                if frame_id == int(_frame_id):
-                                    foreground_paste_task.append([position, sequence_frame_id, kwargs, font_size])
-                        else:
-                            foreground_paste_task.append([position, frame_id, kwargs, font_size])
+                    })
+                    frame_x = _position[0]
+                    frame_y = _position[1]
+                
+            for frame_id, frame in enumerate(position.frames):
+                if frame.size is None:
+                    continue
+                if position.type != "text":
+                    frame_x = frame.x
+                    frame_y = frame.y
+                    image = _image.resize((frame.size[0], frame.size[1]))
+                else:
+                    image = _image
+                
+                if position.perspective: # 变形
+                    _ = position.perspective
+                    points = list()
+                    for point in [_.lt, _.rt, _.rb, _.lb]:
+                        points.append(tuple(point))
+                    image = perspective_image(image, points)
+                
+                if frame.rotate is not None:
+                    image = image.rotate(
+                        frame.rotate[0], center=None if len(frame.rotate) != 3 else (frame.rotate[1], frame.rotate[2]), expand=True)
+                    if not position.rounded: # 旋转后需要重新计算位置
+                        _position = (int(frame_x - image.width / 2), int(frame_y - image.height / 2))
+                    else:
+                        _position = (frame_x, frame_y)
+                else:
+                    _position = (frame_x, frame_y)
+                
+                if position.target == "background": # 背景图
+                    if len(sequences) != 0:
+                        for sequence_frame_id, _frame_id in enumerate(sequences):
+                            if frame_id == int(_frame_id):
+                                background_frame[sequence_frame_id].paste(image, _position, image)
+                    else:
+                        background_frame[frame_id].paste(image, _position, image)
+                elif position.target == "foreground": # 前景图
+                    if len(sequences) != 0:
+                        for sequence_frame_id, _frame_id in enumerate(sequences):
+                            if frame_id == int(_frame_id):
+                                foreground_paste_task.append([sequence_frame_id, image, _position])
+                    else:
+                        foreground_paste_task.append([frame_id, image, _position])
         
         # 粘贴前景图
         for frame_id, frame in enumerate(background_frame):
-            background_frame[frame_id].paste(foreground_frame[frame_id], (0, 0, config.output_size[0], config.output_size[1]), foreground_frame[frame_id])
+            background_frame[frame_id].paste(foreground_frame[frame_id], (0, 0), foreground_frame[frame_id])
         
         # 为了防止被其他图层覆盖，最后处理前景图队列
         for task in foreground_paste_task:
-            position = task[0]
-            if position.type == "image":
-                background_frame[task[1]].paste(task[2], task[3], task[2])
-            if position.type == "text":
-                draw = ImageDraw.Draw(background_frame[task[1]])
-                draw.multiline_text(**task[2])
-                '''
-                with Pilmoji(background_frame[task[1]], use_microsoft_emoji=True) as pilmoji:
-                    # 此处在线下载 Emoji 并渲染到图片中
-                    pilmoji.text(**task[2], emoji_position_offset=(0, int(task[3] / 4)), emoji_scale_factor=5)
-                '''
+            background_frame[task[0]].paste(task[1], task[2], task[1])
+            '''
+            from lib.pilmoji import Pilmoji
+            
+            with Pilmoji(background_frame[task[1]], use_microsoft_emoji=True) as pilmoji:
+                # 此处在线下载 Emoji 并渲染到图片中
+                pilmoji.text(**task[2], emoji_position_offset=(0, int(task[3] / 4)), emoji_scale_factor=5)
+            '''
         
         return background_frame
-
-    def _round_image(self, image):
-        mask = Image.new('L', (image.size[0] * 3, image.size[1] * 3), 0)
-        draw = ImageDraw.Draw(mask) 
-        draw.ellipse((0, 0) + (image.size[0] * 3, image.size[1] * 3), fill=255)
-        mask = mask.resize(image.size, Image.ANTIALIAS)
-        image.putalpha(mask)
-        return image

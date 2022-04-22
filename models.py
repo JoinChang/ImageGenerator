@@ -1,10 +1,10 @@
 from pydantic import BaseModel
-from typing import List, Union, Optional
+from typing import List, Optional
 
 class Frame(BaseModel):
     id: int
-    x: Optional[int]
-    y: Optional[int]
+    x: Optional[int] = 0
+    y: Optional[int] = 0
     size: Optional[List[int]] # 仅 image, 缩放: [宽, 高]
     rotate: Optional[List[int]] # 仅 image, 旋转: [角度, 中心 x, 中心 y]
 
@@ -16,11 +16,18 @@ class Font(BaseModel):
     color: Optional[str] = "black" # 字体颜色
     align: Optional[str] = "center" # 对齐方式, center 时为中心坐标
 
+class Perspective(BaseModel):
+    lt: Optional[List[int]] = [0, 0]
+    rt: Optional[List[int]] = [0, 0]
+    rb: Optional[List[int]] = [0, 0]
+    lb: Optional[List[int]] = [0, 0]
+
 class Position(BaseModel):
     type: str # 物件类型: image, text
     target: str # 目标渲染层: background, foreground
     source: Optional[int] # 指定 input_content
     rounded: Optional[bool] = False # 裁剪为圆形 (仅 image)
+    perspective: Optional[Perspective] # 变形
     multiline: Optional[bool] = False # 换行 (仅 text)
     font: Optional[Font] # 字体 (仅 text)
     frames: List[Frame]
