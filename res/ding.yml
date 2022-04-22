@@ -1,7 +1,7 @@
 id: ding
 name: 顶
 type: gif
-duration: 1
+duration: 60
 background_color: "rgb(0,0,0)"
 positions:
   - type: image

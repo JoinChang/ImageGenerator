@@ -6,7 +6,7 @@ positions:
     target: foreground
     multiline: true
     font:
-      name: msyh.ttf
+      name: FZLTZHK_2.TTF
       min_size: 128
       max_size: 1024
       color: red
