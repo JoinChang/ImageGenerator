@@ -1,0 +1,85 @@
+id: mobai
+name: 膜拜
+type: gif
+duration: 40
+background_color: "rgb(255,255,255)"
+positions:
+  - type: image
+    target: background
+    perspective:
+      lt:
+        - 0
+        - -30
+      rt:
+        - 135
+        - 17
+      rb:
+        - 135
+        - 145
+      lb:
+        - 0
+        - 140
+    frames: 
+      - id: 0
+        x: 0
+        y: 0
+        size:
+          - 150
+          - 150
+      - id: 1
+        x: 0
+        y: 0
+        size:
+          - 150
+          - 150
+      - id: 2
+        x: 0
+        y: 0
+        size:
+          - 150
+          - 150
+      - id: 3
+        x: 0
+        y: 0
+        size:
+          - 150
+          - 150
+      - id: 4
+        x: 0
+        y: 0
+        size:
+          - 150
+          - 150
+      - id: 5
+        x: 0
+        y: 0
+        size:
+          - 150
+          - 150
+      - id: 6
+        x: 0
+        y: 0
+        size:
+          - 150
+          - 150
+      - id: 7
+        x: 0
+        y: 0
+        size:
+          - 150
+          - 150
+      - id: 8
+        x: 0
+        y: 0
+        size:
+          - 150
+          - 150
+      - id: 9
+        x: 0
+        y: 0
+        size:
+          - 150
+          - 150
+output_size:
+  - 300
+  - 169
