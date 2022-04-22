@@ -1,60 +1,36 @@
 id: chui
 name: 锤
 type: gif
-duration: 1
+duration: 40
 background_color: "rgb(255,255,255)"
 positions:
   - type: image
     target: background
     frames:
+      - id: 0
+        x: 65
+        y: 128
+        size:
+          - 77
+          - 72
       - id: 1
-        x: 131
-        y: 237
+        x: 67
+        y: 128
         size:
-          - 144
-          - 53
+          - 73
+          - 72
       - id: 2
-        x: 131
-        y: 239
+        x: 54
+        y: 139
         size:
-          - 145
-          - 52
+          - 94
+          - 61
       - id: 3
-        x: 146
-        y: 184
+        x: 57
+        y: 135
         size:
-          - 113
-          - 105
-      - id: 4
-        x: 146
-        y: 187
-        size:
-          - 114
-          - 102
-      - id: 5
-        x: 146
-        y: 187
-        size:
-          - 113
-          - 104
-      - id: 6
-        x: 142
-        y: 190
-        size:
-          - 119
-          - 99
-      - id: 7
-        x: 141
-        y: 219
-        size:
-          - 120
-          - 70
-      - id: 8
-        x: 141
-        y: 219
-        size:
-          - 120
-          - 70
+          - 86
+          - 65
 output_size:
-  - 500
-  - 400
+  - 200
+  - 200
