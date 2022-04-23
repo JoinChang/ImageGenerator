@@ -1,0 +1,67 @@
+id: xts
+name: 小天使
+type: jpg
+background_color: white
+sources:
+  - type: text
+    is_username: true
+  - type: image
+    is_avatar: true
+positions:
+  - type: text
+    target: foreground
+    content: 请问你们看到$0了吗?
+    font:
+      name: FZLTZHK_2.TTF
+      size: 48
+      color: black
+      align: center
+    frames: 
+      - id: 0
+        x: 300
+        y: 55
+        size:
+          - 560
+  - type: text
+    target: foreground
+    readonly: true
+    content: 非常可爱！简直就是小天使
+    font:
+      name: FZLTZHK_2.TTF
+      size: 48
+      color: black
+      align: center
+    frames: 
+      - id: 0
+        x: 300
+        y: 650
+        size:
+          - 560
+  - type: text
+    target: foreground
+    readonly: true
+    content: 他没失踪也没怎么样  我只是觉得你们都该看一下
+    font:
+      name: FZLTZHK_2.TTF
+      size: 26
+      color: black
+      align: center
+    frames: 
+      - id: 0
+        x: 300
+        y: 700
+        size:
+          - 560
+  - type: image
+    target: foreground
+    source: 1
+    frames: 
+      - id: 0
+        x: 50
+        y: 100
+        size:
+          - 500
+          - 500
+output_size:
+  - 600
+  - 730
