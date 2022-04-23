@@ -4,6 +4,9 @@ type: gif
 duration: 85
 background_color: white
 sequence: "0,1,2,3,1,2,3,0,1,2,3,0,0,1,2,3,0,0,0,0,4,5,5,5,6,7,8,9"
+sources:
+  - type: image
+    is_avatar: true
 positions:
   - type: image
     target: background

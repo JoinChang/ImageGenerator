@@ -3,6 +3,9 @@ name: 顶
 type: gif
 duration: 60
 background_color: "rgb(0,0,0)"
+sources:
+  - type: image
+    is_avatar: true
 positions:
   - type: image
     target: background

@@ -35,27 +35,40 @@ class ImageGenerator:
                 return value 
         return None
 
-    def generate(self, id: str, input_content: List[Union[bytes, str]] = []):
+    def generate(self, id: str, sources: List[Union[BufferedReader, str]] = []):
         """
         生成图片
         `id`: 配置 ID
-        `input_content`: 输入内容
+        `sources`: 输入内容
         """
-        if not os.path.isdir(f"{PATH}/res/{id}"):
-            return {"code": -1} # 资源文件不存在
         if not os.path.isfile(f"{PATH}/res/{id}.yml"):
-            return {"code": -2} # 配置文件不存在
+            return {"code": -1} # 配置文件不存在
         
         config: Config = self.resource_list[id]
+
+        for source_id, _source in enumerate(config.sources):
+            if _source.type == "image":
+                if not isinstance(sources[source_id], BufferedReader):
+                    return {
+                        "code": -2,
+                        "type": "image"
+                    } # 输入内容不正确
+            elif _source.type == "text":
+                if not isinstance(sources[source_id], str):
+                    return {
+                        "code": -2,
+                        "type": "text"
+                    } # 输入内容不正确
+        
         if config.type == "gif":
-            return self._generate_gif(config, input_content)
+            return self._generate_gif(config, sources)
         elif config.type == "jpg":
-            return self._generate_jpg(config, input_content)
+            return self._generate_jpg(config, sources)
 
         return {"code": -3} # 生成类型不支持
     
-    def _generate_gif(self, config: Config, input_content: List[Union[bytes, str]]):
-        frames = self._generate_frame(config, input_content)
+    def _generate_gif(self, config: Config, sources: List[Union[BufferedReader, str]]):
+        frames = self._generate_frame(config, sources)
         save_to = f"{PATH}/temp/{uuid.uuid4()}.gif"
         frames[0].save(save_to, save_all=True, optimize=False, append_images=frames[1:], duration=config.duration, loop=0, disposal=2)
         return {
@@ -63,8 +76,8 @@ class ImageGenerator:
             "path": save_to
         }
     
-    def _generate_jpg(self, config: Config, input_content: List[Union[bytes, str]]):
-        frames = self._generate_frame(config, input_content)
+    def _generate_jpg(self, config: Config, sources: List[Union[BufferedReader, str]]):
+        frames = self._generate_frame(config, sources)
         save_to = f"{PATH}/temp/{uuid.uuid4()}.jpg"
         frames[0].convert("RGB").save(save_to)
         return {
@@ -72,48 +85,58 @@ class ImageGenerator:
             "path": save_to
         }
 
-    def _generate_frame(self, config: Config, input_content: List[Union[bytes, str]]) -> List:
+    def _generate_frame(self, config: Config, sources: List[Union[BufferedReader, str]]) -> List:
         background_frame = list()
         foreground_frame = list()
         paste_content = list()
         foreground_paste_task = list()
 
         # 读取输入图片
-        for _input_content in input_content:
-            if isinstance(_input_content, BufferedReader):
-                paste_content.append(Image.open(_input_content).convert("RGBA"))
-            elif isinstance(_input_content, str):
-                paste_content.append(_input_content)
+        for _source in sources:
+            if isinstance(_source, BufferedReader):
+                paste_content.append(Image.open(_source).convert("RGBA"))
+            elif isinstance(_source, str):
+                paste_content.append(_source)
 
         # 预生成背景图与前景图
-        sequences = list()
         def append_basic_frame(file_name):
             background_frame.append(Image.new("RGBA", (config.output_size[0], config.output_size[1]), config.background_color))
             foreground_frame.append(Image.open(f"{PATH}/res/{config.id}/{file_name}").convert("RGBA"))
         
-        file_list = os.listdir(f"{PATH}/res/{config.id}")
-        file_list.sort(key=lambda x: int(x[:-4]))
-        if config.sequence is not None: # 自定义队列
-            sequences = config.sequence.replace(" ", "").split(",")
-            for sequence in sequences:
-                append_basic_frame(f"{int(sequence)}.png")
-        else:
-            for file_name in file_list:
-                append_basic_frame(file_name)
+        sequences = list()
+        if os.path.isdir(f"{PATH}/res/{config.id}"):
+            file_list = os.listdir(f"{PATH}/res/{config.id}")
+            file_list.sort(key=lambda x: int(x[:-4]))
+            if config.sequence is not None: # 自定义队列
+                sequences = config.sequence.replace(" ", "").split(",")
+                for sequence in sequences:
+                    append_basic_frame(f"{int(sequence)}.png")
+            else:
+                for file_name in file_list:
+                    append_basic_frame(file_name)
         
         # 粘贴内容
         for position_id, position in enumerate(config.positions):
             if position.type == "image":
-                _image = paste_content[position_id]
-                if not isinstance(_image, Image.Image):
-                    raise UnmatchedPositionType(position_id, position.type)
                 if position.source is not None:
                     _image = paste_content[position.source]
+                else:
+                    _image = paste_content[position_id]
+                if not isinstance(_image, Image.Image):
+                    raise UnmatchedPositionType(position_id, position.type)
                 
                 if position.rounded: # 裁剪为圆形
                     _image = round_image(_image)
             elif position.type == "text":
-                _text = paste_content[position_id]
+                if position.readonly: # 只读
+                    _text = position.content
+                else:
+                    if position.content is not None:
+                        for _position_id in range(len(paste_content)):
+                            if isinstance(paste_content[_position_id], str):
+                                _text = position.content.replace(f"${_position_id}", paste_content[_position_id])
+                    else:
+                        _text = paste_content[position_id]
                 if not isinstance(_text, str):
                     raise UnmatchedPositionType(position_id, position.type)
                 for frame_id, frame in enumerate(position.frames):
@@ -139,16 +162,14 @@ class ImageGenerator:
                         if font_size != min_size:
                             is_wrap = False
                     if position.font.align == "center":
-                        if is_wrap: # 自动换行
+                        if is_wrap and position.multiline: # 自动换行
                             _text = "\n".join(wrap_text(_text, font=_font, max_width=frame.size[0]))
-                            print(_text)
-                        if position.multiline:
                             w, h = _font.getsize_multiline(_text)
                         else:
                             w, h = _font.getsize(_text)
                     _position = (frame.x, frame.y)
-                    _, (offset_x, offset_y) = _font.font.getsize(_text)
-                    _image = Image.new("RGBA", (w + offset_x, h + offset_y), "rgba(0,0,0,0)")
+                    ascent, descent = _font.getmetrics() # 基线到最低轮廓点的距离，用于防止文字溢出
+                    _image = Image.new("RGBA", (w, h + descent), "rgba(0,0,0,0)")
                     draw = ImageDraw.Draw(_image)
                     draw.multiline_text(**{
                         "xy": (0, 0), # _position
@@ -163,12 +184,15 @@ class ImageGenerator:
             for frame_id, frame in enumerate(position.frames):
                 if frame.size is None:
                     continue
+
                 if position.type != "text":
                     frame_x = frame.x
                     frame_y = frame.y
                     image = _image.resize((frame.size[0], frame.size[1]))
                 else:
                     image = _image
+                    if is_wrap: # 本来应该自动换行，但是没有 multiline 参数，所以自动压缩宽度
+                        image = image.resize((frame.size[0], h + descent))
                 
                 if position.perspective: # 变形
                     _ = position.perspective
@@ -194,8 +218,12 @@ class ImageGenerator:
                     if len(sequences) != 0:
                         for sequence_frame_id, _frame_id in enumerate(sequences):
                             if frame_id == int(_frame_id):
+                                if sequence_frame_id >= len(background_frame) - 1:
+                                    background_frame.append(Image.new("RGBA", tuple(config.output_size), config.background_color))
                                 background_frame[sequence_frame_id].paste(image, _position, image)
                     else:
+                        if frame_id >= len(background_frame) - 1:
+                            background_frame.append(Image.new("RGBA", tuple(config.output_size), config.background_color))
                         background_frame[frame_id].paste(image, _position, image)
                 elif position.target == "foreground": # 前景图
                     if len(sequences) != 0:
@@ -207,10 +235,14 @@ class ImageGenerator:
         
         # 粘贴前景图
         for frame_id, frame in enumerate(background_frame):
+            if frame_id >= len(foreground_frame) - 1:
+                foreground_frame.append(Image.new("RGBA", tuple(config.output_size), config.background_color))
             background_frame[frame_id].paste(foreground_frame[frame_id], (0, 0), foreground_frame[frame_id])
         
         # 为了防止被其他图层覆盖，最后处理前景图队列
         for task in foreground_paste_task:
+            if frame_id >= len(background_frame) - 1:
+                background_frame.append(Image.new("RGBA", tuple(config.output_size), config.background_color))
             background_frame[task[0]].paste(task[1], task[2], task[1])
             '''
             from lib.pilmoji import Pilmoji

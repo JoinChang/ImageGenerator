@@ -1,6 +1,9 @@
 id: beibao
 name: 悲报
 type: jpg
+sources:
+  - type: text
+    is_custom_text: true
 positions:
   - type: text
     target: foreground

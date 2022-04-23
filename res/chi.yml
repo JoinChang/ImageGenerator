@@ -3,6 +3,9 @@ name: 吃
 type: gif
 duration: 1
 background_color: "rgb(255,255,255)"
+sources:
+  - type: image
+    is_avatar: true
 positions:
   - type: image
     target: background

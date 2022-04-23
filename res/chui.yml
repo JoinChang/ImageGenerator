@@ -3,6 +3,9 @@ name: 锤
 type: gif
 duration: 40
 background_color: "rgb(255,255,255)"
+sources:
+  - type: image
+    is_avatar: true
 positions:
   - type: image
     target: background
