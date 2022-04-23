@@ -164,9 +164,7 @@ class ImageGenerator:
                     if position.font.align == "center":
                         if is_wrap and position.multiline: # 自动换行
                             _text = "\n".join(wrap_text(_text, font=_font, max_width=frame.size[0]))
-                            w, h = _font.getsize_multiline(_text)
-                        else:
-                            w, h = _font.getsize(_text)
+                        w, h = _font.getsize_multiline(_text)
                     _position = (frame.x, frame.y)
                     ascent, descent = _font.getmetrics() # 基线到最低轮廓点的距离，用于防止文字溢出
                     _image = Image.new("RGBA", (w, h + descent), "rgba(0,0,0,0)")
