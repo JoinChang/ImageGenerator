@@ -1,0 +1,54 @@
+id: chui2
+name: 锤2
+type: gif
+duration: 70
+background_color: "rgb(255,255,255)"
+positions:
+  - type: image
+    target: background
+    frames: 
+      - id: 0
+        x: 62
+        y: 143
+        size:
+          - 158
+          - 113
+      - id: 1
+        x: 52
+        y: 177
+        size:
+          - 173
+          - 105
+      - id: 2
+        x: 42
+        y: 192
+        size:
+          - 192
+          - 92
+      - id: 3
+        x: 46
+        y: 182
+        size:
+          - 184
+          - 100
+      - id: 4
+        x: 54
+        y: 169
+        size:
+          - 174
+          - 110
+      - id: 5
+        x: 69
+        y: 128
+        size:
+          - 144
+          - 135
+      - id: 6
+        x: 65
+        y: 130
+        size:
+          - 152
+          - 124
+output_size:
+  - 247
+  - 285
