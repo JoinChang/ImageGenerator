@@ -1,0 +1,84 @@
+id: suo
+name: 嗦
+type: gif
+duration: 80
+background_color: "rgb(255,255,255)"
+positions:
+  - type: image
+    target: background
+    frames: 
+      - id: 0
+        x: 82
+        y: 100
+        size:
+          - 130
+          - 119
+      - id: 1
+        x: 82
+        y: 94
+        size:
+          - 126
+          - 125
+      - id: 2
+        x: 82
+        y: 120
+        size:
+          - 128
+          - 99
+      - id: 3
+        x: 81
+        y: 164
+        size:
+          - 132
+          - 55
+      - id: 4
+        x: 79
+        y: 163
+        size:
+          - 132
+          - 55
+      - id: 5
+        x: 82
+        y: 140
+        size:
+          - 127
+          - 79
+      - id: 6
+        x: 83
+        y: 152
+        size:
+          - 125
+          - 67
+      - id: 7
+        x: 75
+        y: 157
+        size:
+          - 140
+          - 62
+      - id: 8
+        x: 72
+        y: 165
+        size:
+          - 144
+          - 54
+      - id: 9
+        x: 80
+        y: 132
+        size:
+          - 128
+          - 87
+      - id: 10
+        x: 81
+        y: 127
+        size:
+          - 127
+          - 92
+      - id: 11
+        x: 79
+        y: 111
+        size:
+          - 132
+          - 108
+output_size:
+  - 320
+  - 300
