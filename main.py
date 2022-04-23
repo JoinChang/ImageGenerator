@@ -1,7 +1,6 @@
 from io import BufferedReader
 from PIL import Image, ImageDraw, ImageFont
 from typing import Union, List
-import textwrap
 import uuid
 import yaml
 import sys
@@ -12,7 +11,7 @@ sys.path.append(PATH)
 
 from models import Config
 from exceptions import *
-from utils import round_image, perspective_image
+from utils import *
 
 class ImageGenerator:
     def __init__(self):
@@ -26,7 +25,22 @@ class ImageGenerator:
         if not os.path.isdir(f"{PATH}/temp"):
             os.mkdir(f"{PATH}/temp")
 
+    def search_config(self, name: str) -> Config:
+        """
+        搜索配置
+        `name`: 关键词
+        """
+        for key, value in self.resource_list.items():
+            if name.lower() in [value.name, key.lower()]:
+                return value 
+        return None
+
     def generate(self, id: str, input_content: List[Union[bytes, str]] = []):
+        """
+        生成图片
+        `id`: 配置 ID
+        `input_content`: 输入内容
+        """
         if not os.path.isdir(f"{PATH}/res/{id}"):
             return {"code": -1} # 资源文件不存在
         if not os.path.isfile(f"{PATH}/res/{id}.yml"):
@@ -126,14 +140,14 @@ class ImageGenerator:
                             is_wrap = False
                     if position.font.align == "center":
                         if is_wrap: # 自动换行
-                            _text = "\n".join(textwrap.wrap(_text, width=int(frame.size[0] / font_size)))
-                            # 此处只适用于等宽字符，对于英文、数字等非等宽字符会有所影响
+                            _text = "\n".join(wrap_text(_text, font=_font, max_width=frame.size[0]))
+                            print(_text)
                         if position.multiline:
                             w, h = _font.getsize_multiline(_text)
                         else:
                             w, h = _font.getsize(_text)
                     _position = (frame.x, frame.y)
-                    (w, h), (offset_x, offset_y) = _font.font.getsize(_text)
+                    _, (offset_x, offset_y) = _font.font.getsize(_text)
                     _image = Image.new("RGBA", (w + offset_x, h + offset_y), "rgba(0,0,0,0)")
                     draw = ImageDraw.Draw(_image)
                     draw.multiline_text(**{

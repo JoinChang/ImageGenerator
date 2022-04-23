@@ -1,13 +1,35 @@
 from PIL import Image, ImageDraw
+from PIL.ImageFont import FreeTypeFont
 from typing import List, Tuple
 import numpy as np
 
-def round_image(image: Image):
+def wrap_text(text: str, font: FreeTypeFont, max_width: float, **kwargs) -> List[str]:
+    """
+    文本自动换行
+    `text`: 文本
+    `font`: 字体
+    `max_width`: 最大宽度
+    `kwargs`: 其他参数
+    """
+    line = ""
+    lines = []
+    for t in text:
+        if t == "\n":
+            lines.append(line)
+            line = ""
+        elif font.getsize_multiline(line + t, **kwargs)[0] > max_width:
+            lines.append(line)
+            line = t
+        else:
+            line += t
+    lines.append(line)
+    return lines
+
+def round_image(image: Image) -> Image:
     """
     图片圆角处理
     `image`: 原始图片
     """
-
     mask = Image.new('L', (image.size[0] * 3, image.size[1] * 3), 0)
     draw = ImageDraw.Draw(mask) 
     draw.ellipse((0, 0) + (image.size[0] * 3, image.size[1] * 3), fill=255)
@@ -15,13 +37,12 @@ def round_image(image: Image):
     image.putalpha(mask)
     return image
 
-def perspective_image(image: Image, points: List[Tuple[float, float]]):
+def perspective_image(image: Image, points: List[Tuple[float, float]]) -> Image:
     """
     图片透视变换
     `image`: 原始图片
     `points`: 四点坐标（左上、右上、右下、左下）
     """
-
     def find_coeffs(pa: List[Tuple[float, float]], pb: List[Tuple[float, float]]):
         matrix = []
         for p1, p2 in zip(pa, pb):
