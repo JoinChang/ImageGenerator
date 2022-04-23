@@ -1,0 +1,132 @@
+id: jintie
+name: 紧贴
+type: gif
+duration: 80
+background_color: "rgb(255,255,255)"
+positions:
+  - type: image
+    target: background
+    frames: 
+      - id: 0
+        x: 39
+        y: 169
+        size:
+          - 267
+          - 141
+      - id: 1
+        x: 40
+        y: 167
+        size:
+          - 264
+          - 143
+      - id: 2
+        x: 38
+        y: 174
+        size:
+          - 270
+          - 135
+      - id: 3
+        x: 40
+        y: 167
+        size:
+          - 264
+          - 143
+      - id: 4
+        x: 38
+        y: 174
+        size:
+          - 270
+          - 135
+      - id: 5
+        x: 40
+        y: 167
+        size:
+          - 264
+          - 143
+      - id: 6
+        x: 38
+        y: 174
+        size:
+          - 270
+          - 135
+      - id: 7
+        x: 40
+        y: 167
+        size:
+          - 264
+          - 143
+      - id: 8
+        x: 38
+        y: 174
+        size:
+          - 270
+          - 135
+      - id: 9
+        x: 28
+        y: 176
+        size:
+          - 293
+          - 134
+      - id: 10
+        x: 5
+        y: 215
+        size:
+          - 333
+          - 96
+      - id: 11
+        x: 10
+        y: 210
+        size:
+          - 321
+          - 102
+      - id: 12
+        x: 3
+        y: 210
+        size:
+          - 330
+          - 104
+      - id: 13
+        x: 4
+        y: 210
+        size:
+          - 328
+          - 102
+      - id: 14
+        x: 4
+        y: 212
+        size:
+          - 328
+          - 100
+      - id: 15
+        x: 4
+        y: 212
+        size:
+          - 328
+          - 100
+      - id: 16
+        x: 4
+        y: 212
+        size:
+          - 328
+          - 100
+      - id: 17
+        x: 4
+        y: 212
+        size:
+          - 328
+          - 100
+      - id: 18
+        x: 4
+        y: 212
+        size:
+          - 328
+          - 100
+      - id: 19
+        x: 29
+        y: 195
+        size:
+          - 285
+          - 120
+output_size:
+  - 320
+  - 300
