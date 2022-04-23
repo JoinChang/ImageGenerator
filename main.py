@@ -218,11 +218,11 @@ class ImageGenerator:
                     if len(sequences) != 0:
                         for sequence_frame_id, _frame_id in enumerate(sequences):
                             if frame_id == int(_frame_id):
-                                if sequence_frame_id >= len(background_frame) - 1:
+                                if sequence_frame_id > len(background_frame) - 1:
                                     background_frame.append(Image.new("RGBA", tuple(config.output_size), config.background_color))
                                 background_frame[sequence_frame_id].paste(image, _position, image)
                     else:
-                        if frame_id >= len(background_frame) - 1:
+                        if frame_id > len(background_frame) - 1:
                             background_frame.append(Image.new("RGBA", tuple(config.output_size), config.background_color))
                         background_frame[frame_id].paste(image, _position, image)
                 elif position.target == "foreground": # 前景图
@@ -235,13 +235,13 @@ class ImageGenerator:
         
         # 粘贴前景图
         for frame_id, frame in enumerate(background_frame):
-            if frame_id >= len(foreground_frame) - 1:
+            if frame_id > len(foreground_frame) - 1:
                 foreground_frame.append(Image.new("RGBA", tuple(config.output_size), config.background_color))
             background_frame[frame_id].paste(foreground_frame[frame_id], (0, 0), foreground_frame[frame_id])
         
         # 为了防止被其他图层覆盖，最后处理前景图队列
         for task in foreground_paste_task:
-            if frame_id >= len(background_frame) - 1:
+            if frame_id > len(background_frame) - 1:
                 background_frame.append(Image.new("RGBA", tuple(config.output_size), config.background_color))
             background_frame[task[0]].paste(task[1], task[2], task[1])
             '''

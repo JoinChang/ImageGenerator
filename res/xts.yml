@@ -40,7 +40,7 @@ positions:
   - type: text
     target: foreground
     readonly: true
-    content: 他没失踪也没怎么样  我只是觉得你们都该看一下
+    content: 她没失踪也没怎么样  我只是觉得你们都该看一下
     font:
       name: FZLTZHK_2.TTF
       size: 26
