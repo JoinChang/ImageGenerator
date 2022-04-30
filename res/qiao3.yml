@@ -1,0 +1,40 @@
+id: qiao3
+name: 敲3
+type: gif
+duration: 80
+background_color: "rgb(255,255,255)"
+sequence: "0,1,2,3,0,1,2,3,0"
+sources:
+  - type: image
+    is_avatar: true
+positions:
+  - type: image
+    target: background
+    frames: 
+      - id: 0
+        x: 33
+        y: 62
+        size:
+          - 45
+          - 47
+      - id: 1
+        x: 30
+        y: 106
+        size:
+          - 48
+          - 43
+      - id: 2
+        x: 39
+        y: 126
+        size:
+          - 47
+          - 44
+      - id: 2
+        x: 30
+        y: 69
+        size:
+          - 46
+          - 46
+output_size:
+  - 272
+  - 212
