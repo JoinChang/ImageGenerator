@@ -10,7 +10,7 @@ positions:
     multiline: true
     max_line: 2
     font:
-      name: 方正少儿简体.TTF
+      name: 方正少儿简体.modified.ttf
       min_size: 80
       max_size: 160
       color: "#51201d"

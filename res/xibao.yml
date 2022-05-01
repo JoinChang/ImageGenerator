@@ -9,7 +9,7 @@ positions:
     target: foreground
     multiline: true
     font:
-      name: FZLTZHK_2.TTF
+      name: 方正兰亭中黑.modified.ttf
       min_size: 128
       max_size: 1024
       color: red
