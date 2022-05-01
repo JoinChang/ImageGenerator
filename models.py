@@ -30,6 +30,7 @@ class Position(BaseModel):
     perspective: Optional[Perspective] # 变形
     readonly: Optional[bool] = False # 只读
     multiline: Optional[bool] = False # 换行 (仅 text)
+    max_line: Optional[int] # 最大行数 (仅 text)
     font: Optional[Font] # 字体 (仅 text)
     content: Optional[str] # 内容 (仅 text), 使用 ${source} 替换
     frames: List[Frame]

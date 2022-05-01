@@ -60,10 +60,17 @@ class ImageGenerator:
                         "type": "text"
                     } # 输入内容不正确
         
-        if config.type == "gif":
-            return self._generate_gif(config, sources)
-        elif config.type == "jpg":
-            return self._generate_jpg(config, sources)
+        try:
+            if config.type == "gif":
+                return self._generate_gif(config, sources)
+            elif config.type == "jpg":
+                return self._generate_jpg(config, sources)
+        except ReachMaxLineException as e:
+            return {
+                "code": -101,
+                "position": e.position,
+                "max_line": e.max_line
+            } # 超过最大行数
 
         return {"code": -3} # 生成类型不支持
     
@@ -163,7 +170,11 @@ class ImageGenerator:
                             is_wrap = False
                     if position.font.align == "center":
                         if is_wrap and position.multiline: # 自动换行
-                            _text = "\n".join(wrap_text(_text, font=_font, max_width=frame.size[0]))
+                            wrap_line = wrap_text(_text, font=_font, max_width=frame.size[0])
+                            if position.max_line:
+                                if len(wrap_line) > position.max_line: # 最大行数
+                                    raise ReachMaxLineException(position_id, position.max_line)
+                            _text = "\n".join(wrap_line)
                         w, h = _font.getsize_multiline(_text)
                     _position = (frame.x, frame.y)
                     ascent, descent = _font.getmetrics() # 基线到最低轮廓点的距离，用于防止文字溢出
@@ -197,7 +208,12 @@ class ImageGenerator:
                     points = list()
                     for point in [_.lt, _.rt, _.rb, _.lb]:
                         points.append(tuple(point))
-                    image = perspective_image(image, points)
+                    __image = Image.new("RGBA", (frame.size[0], frame.size[1]), "rgba(0,0,0,0)") # 因为文字不是整个 frame.size，无法直接变换，所以需要生成一个 frame.size 的背景来变形，应该会和 rotate 冲突
+                    __image.paste(image, (
+                        int((frame.size[0] - image.size[0]) / 2),
+                        int((frame.size[1] - image.size[1]) / 2)
+                    ), image)
+                    image = perspective_image(__image, points)
                 
                 if frame.rotate is not None:
                     image = image.rotate(
