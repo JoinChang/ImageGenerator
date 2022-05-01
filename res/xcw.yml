@@ -1,0 +1,40 @@
+id: xcw
+name: 小仓唯
+type: jpg
+sources:
+  - type: text
+    is_custom_text: true
+positions:
+  - type: text
+    target: foreground
+    multiline: true
+    max_line: 2
+    font:
+      name: 方正少儿简体.TTF
+      min_size: 80
+      max_size: 160
+      color: "#51201d"
+      align: center
+    perspective:
+      lt:
+        - 35
+        - 20
+      rt:
+        - 360
+        - 135
+      rb:
+        - 320
+        - 390
+      lb:
+        - 0
+        - 260
+    frames: 
+      - id: 0
+        x: 469
+        y: 205
+        size:
+          - 360
+          - 210
+output_size:
+  - 690
+  - 690
