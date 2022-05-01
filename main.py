@@ -258,12 +258,5 @@ class ImageGenerator:
             if frame_id > len(background_frame) - 1:
                 background_frame.append(Image.new("RGBA", tuple(config.output_size), config.background_color))
             background_frame[task[0]].paste(task[1], task[2], task[1])
-            '''
-            from lib.pilmoji import Pilmoji
-            
-            with Pilmoji(background_frame[task[1]], use_microsoft_emoji=True) as pilmoji:
-                # 此处在线下载 Emoji 并渲染到图片中
-                pilmoji.text(**task[2], emoji_position_offset=(0, int(task[3] / 4)), emoji_scale_factor=5)
-            '''
         
         return background_frame
