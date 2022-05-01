@@ -12,7 +12,7 @@ positions:
     target: foreground
     content: 请问你们看到$0了吗?
     font:
-      name: FZLTZHK_2.TTF
+      name: 方正兰亭中黑.modified.ttf
       size: 48
       color: black
       align: center
@@ -27,7 +27,7 @@ positions:
     readonly: true
     content: 非常可爱！简直就是小天使
     font:
-      name: FZLTZHK_2.TTF
+      name: 方正兰亭中黑.modified.ttf
       size: 48
       color: black
       align: center
@@ -42,7 +42,7 @@ positions:
     readonly: true
     content: 她没失踪也没怎么样  我只是觉得你们都该看一下
     font:
-      name: FZLTZHK_2.TTF
+      name: 方正兰亭中黑.modified.ttf
       size: 26
       color: black
       align: center

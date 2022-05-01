@@ -8,6 +8,7 @@ positions:
   - type: text
     target: foreground
     multiline: true
+    max_line: 11
     font:
       name: 方正兰亭中黑.modified.ttf
       min_size: 128
