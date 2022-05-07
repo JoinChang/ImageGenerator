@@ -1,0 +1,28 @@
+id: yng
+name: 有内鬼
+type: jpg
+sources:
+  - type: text
+    is_custom_text: true
+positions:
+  - type: text
+    target: foreground
+    multiline: true
+    max_line: 7
+    font:
+      name: 点点像素.ttf
+      size: 70
+      color: black
+      align: left
+    frames:
+      - id: 0
+        x: 580
+        y: 600
+        size:
+          - 700
+          - 450
+        rotate:
+          - -9.99
+output_size:
+  - 1242
+  - 1119
