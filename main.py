@@ -151,6 +151,7 @@ class ImageGenerator:
                     if isinstance(position.font.size, int):
                         font_size = position.font.size
                         _font = ImageFont.truetype(f"{PATH}/fonts/{position.font.name}", font_size)
+                        w, h = _font.getsize(_text)
                     else: # 自动调整大小
                         min_size = 0
                         max_size = min(*frame.size)
@@ -168,14 +169,17 @@ class ImageGenerator:
                             _font = ImageFont.truetype(f"{PATH}/fonts/{position.font.name}", font_size)
                         if font_size != min_size:
                             is_wrap = False
+                    if is_wrap and position.multiline: # 自动换行
+                        wrap_line = wrap_text(_text, font=_font, max_width=frame.size[0])
+                        if position.max_line:
+                            if len(wrap_line) > position.max_line: # 最大行数
+                                raise ReachMaxLineException(position_id, position.max_line)
+                        _text = "\n".join(wrap_line)
                     if position.font.align == "center":
-                        if is_wrap and position.multiline: # 自动换行
-                            wrap_line = wrap_text(_text, font=_font, max_width=frame.size[0])
-                            if position.max_line:
-                                if len(wrap_line) > position.max_line: # 最大行数
-                                    raise ReachMaxLineException(position_id, position.max_line)
-                            _text = "\n".join(wrap_line)
                         w, h = _font.getsize_multiline(_text)
+                    else:
+                        w = frame.size[0]
+                        h = frame.size[1]
                     _position = (frame.x, frame.y)
                     ascent, descent = _font.getmetrics() # 基线到最低轮廓点的距离，用于防止文字溢出
                     _image = Image.new("RGBA", (w, h + descent), "rgba(0,0,0,0)")

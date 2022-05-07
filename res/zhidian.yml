@@ -1,0 +1,36 @@
+id: zhidian
+name: 致电
+type: jpg
+sources:
+  - type: text
+    is_username: true
+  - type: image
+    is_avatar: true
+positions:
+  - type: text
+    target: foreground
+    content: 这种情况你应该致电$0
+    font:
+      name: 方正兰亭中黑.modified.ttf
+      size: 128
+      color: black
+      align: center
+    frames: 
+      - id: 0
+        x: 716
+        y: 100
+        size:
+          - 1376
+  - type: image
+    target: foreground
+    source: 1
+    frames: 
+      - id: 0
+        x: 800
+        y: 230
+        size:
+          - 550
+          - 550
+output_size:
+  - 1426
+  - 1213
