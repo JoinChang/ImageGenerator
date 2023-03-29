@@ -1,0 +1,21 @@
+id: jiaru
+name: 加入
+type: jpg
+background_color: "rgb(255,255,255)"
+sources:
+  - type: image
+    is_avatar: true
+positions:
+  - type: image
+    target: foreground
+    rounded: true
+    frames: 
+      - id: 0
+        x: 170
+        y: 170
+        size:
+          - 512
+          - 512
+output_size:
+  - 852
+  - 852
